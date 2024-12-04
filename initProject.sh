@@ -91,9 +91,9 @@ echo "$tsconfig_template" > tsconfig.json
 echo "Archivo tsconfig.json creado"
 
 # Crear la estructura de directorios
-mkdir src data logs resource utils
+mkdir src data logs resource utils imagen
 #cd src
-mkdir src/{module,database,image,middleware}
+mkdir src/{module,database,middleware}
 #mkdir module database image middleware 
 mkdir src/module/example
 #cd module && mkdir example && cd example 
