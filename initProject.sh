@@ -28,7 +28,7 @@ fi
 # Inicializar un nuevo proyecto Node.js
 npm init -y
 
-touch main.ts README.md .gitignore tsconfig.json 
+touch main.ts README.md .gitignore tsconfig.json docker-compose.yml
 
 echo "node_modules
 .env
@@ -90,8 +90,49 @@ echo "$tsconfig_template" > tsconfig.json
 
 echo "Archivo tsconfig.json creado"
 
+docker_compose_template='# Define la versión del archivo Compose (opcional pero recomendable)
+# version: "3.8"
+
+# Sección para definir los servicios del proyecto
+services:
+  # Nombre del servicio (puedes cambiarlo según prefieras)
+  db:
+    # Imagen Docker que se usará para este servicio
+    image: postgres:15 # Usa PostgreSQL versión 15
+
+    # Nombre del contenedor
+    container_name: postgres-1 # Nombre del contenedor
+
+    # Variables de entorno para configurar la base de datos
+    environment:
+      POSTGRES_USER: postgres # Usuario predeterminado de la base de datos
+      POSTGRES_PASSWORD: root # Contraseña del usuario
+      POSTGRES_DB: dbexample # Nombre de la base de datos que se creará
+
+    # Puertos: mapea el puerto 5432 (dentro del contenedor) al 5434 (en tu máquina host)
+    ports:
+      - "5434:5432" # host:contenedor
+
+    # Volúmenes: mapea una carpeta local a la ruta de datos de PostgreSQL en el contenedor
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+        # ./postgres-data es una carpeta en tu máquina local
+        # /var/lib/postgresql/data es donde PostgreSQL guarda sus datos
+
+# Define volúmenes externos (puedes agregar nombres aquí si los necesitas)
+volumes:
+  {}'
+
+echo "$docker_compose_template" > docker-compose.yml
+
+echo "Archivo docker-compose.yml creado"
+
+
+
+
+
 # Crear la estructura de directorios
-mkdir src data logs resource utils imagen
+mkdir src data logs resource utils image
 #cd src
 mkdir src/{module,database,middleware}
 #mkdir module database image middleware 
@@ -103,7 +144,7 @@ touch src/module/example/{route.ts,controller.ts,service.ts,model.ts,interfaces.
 if [ "$type_installation" == "X" ]; then
   npm i tsx dotenv nodemon pkgroll typescript --save-dev 
   npm i bcryptjs express express-rate-limit jsonwebtoken nanoid pg winston --save
-  npm i @types/bcryptjs @types/express @types/jsonwebtoken @types/node @types/pg @types/winston --save-dev
+  npm i @types/bcryptjs @types/express @types/jsonwebtoken @types/node @types/pg --save-dev
   
 fi
 
